@@ -30,3 +30,4 @@
 /Users/mansurlestay/RiderProjects/ProjectNEA/ProjectGame/obj/Debug/net8.0/ProjectGame.pdb
 /Users/mansurlestay/RiderProjects/ProjectNEA/ProjectGame/obj/Debug/net8.0/ProjectGame.genruntimeconfig.cache
 /Users/mansurlestay/RiderProjects/ProjectNEA/ProjectGame/obj/Debug/net8.0/ref/ProjectGame.dll
+/Users/mansurlestay/RiderProjects/ProjectNEA/ProjectGame/bin/Debug/net8.0/Content/squareTex.xnb
