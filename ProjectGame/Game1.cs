@@ -9,13 +9,17 @@ public class Game1 : Game
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _batch;
 
+    private tileGrid _tileGrid;
+
     #region ScreenResolution
-    private readonly Vector2 _resolution = new Vector2(800, 800);
+    private readonly Vector2 _resolution = new Vector2(500, 500);
     private readonly bool _isFullScreen = false;
     private ScreenResolution _screenResolution;
     #endregion
 
     private Texture2D _tileTex;
+    private Texture2D _pixelTex;
+    
     public Tile[,] Tiles;
 
     #region Game1
@@ -29,6 +33,7 @@ public class Game1 : Game
     #region Initalize
     protected override void Initialize()
     {
+        _tileGrid = new tileGrid(50, new Vector2(0, 0), 10, 10);
         base.Initialize();
     }
     #endregion
@@ -42,6 +47,10 @@ public class Game1 : Game
         
         //PURPOSE: loads the texture for the node
         _tileTex = Content.Load<Texture2D>("squareTex");
+        
+        //PURPOSE: creates a pixel of screen that can be used to be coloured
+        _pixelTex = new Texture2D(GraphicsDevice, 1, 1);
+        _pixelTex.SetData(new Color[] { Color.White });
     }
     #endregion
     #region Update
@@ -55,11 +64,11 @@ public class Game1 : Game
     #region Draw
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Black);
+        GraphicsDevice.Clear(Color.CornflowerBlue);
         
         _batch.Begin();
         
-        
+        _tileGrid.Draw(_batch,_pixelTex, _pixelTex);
         
         _batch.End();
         

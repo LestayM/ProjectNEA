@@ -14,11 +14,13 @@ public class ScreenResolution
             graphics.PreferredBackBufferHeight = (int)resolution.Y;
             graphics.PreferredBackBufferWidth = (int)resolution.X;
             graphics.ApplyChanges();
+            return;
         }
         else
         {
             graphics.IsFullScreen = true;
             graphics.ApplyChanges();
+            return;
         }
     }
 }
