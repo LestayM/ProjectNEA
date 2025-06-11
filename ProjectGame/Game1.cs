@@ -18,12 +18,12 @@ public class Game1 : Game
     private ScreenResolution _screenResolution;
     #endregion
 
-    private Texture2D _tileTex;
+    // private Texture2D _tileTex;
     private Texture2D _pixelTex;
     
     public Tile[,] Tiles;
-    public Vector2 StartBoxPos = new Vector2(0, 0);
-    public Vector2 EndBoxPos = new Vector2(0,1);
+    // public Vector2 StartBoxPos = new Vector2(0, 0);
+    // public Vector2 EndBoxPos = new Vector2(0,1);
     
     public static MouseState mouseState =  Mouse.GetState();
     public int mouseX = mouseState.X;
@@ -61,13 +61,13 @@ public class Game1 : Game
         _pixelTex = new Texture2D(GraphicsDevice, 1, 1);
         _pixelTex.SetData(new Color[] { Color.White });
         
-        _tileGrid.Tiles[(int)StartBoxPos.X,(int)StartBoxPos.Y].Start = true;
-        if (_tileGrid.Tiles[(int)StartBoxPos.X, (int)StartBoxPos.Y].Start)
-            _tileGrid.Tiles[(int)StartBoxPos.X, (int)StartBoxPos.Y].isWalkable = false;
-        
-        _tileGrid.Tiles[(int)EndBoxPos.X,(int)EndBoxPos.Y].End = true;
-        if (_tileGrid.Tiles[(int)EndBoxPos.X, (int)EndBoxPos.Y].End)
-            _tileGrid.Tiles[(int)EndBoxPos.X, (int)EndBoxPos.Y].isWalkable = false;
+        // _tileGrid.Tiles[(int)StartBoxPos.X,(int)StartBoxPos.Y].Start = true;
+        // if (_tileGrid.Tiles[(int)StartBoxPos.X, (int)StartBoxPos.Y].Start)
+        //     _tileGrid.Tiles[(int)StartBoxPos.X, (int)StartBoxPos.Y].isWalkable = false;
+        //
+        // _tileGrid.Tiles[(int)EndBoxPos.X,(int)EndBoxPos.Y].End = true;
+        // if (_tileGrid.Tiles[(int)EndBoxPos.X, (int)EndBoxPos.Y].End)
+        //     _tileGrid.Tiles[(int)EndBoxPos.X, (int)EndBoxPos.Y].isWalkable = false;
     }
     #endregion
     #region Update
@@ -78,18 +78,49 @@ public class Game1 : Game
         mouseState = Mouse.GetState();
         mousePoint = new Point(mouseState.X, mouseState.Y);
         
+        bool _startSelected = false;
+        bool _endSelected = false;
         foreach(Tile tile in _tileGrid.Tiles)
         {
             if (tile._bounds.Contains(mousePoint))
             {
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    if(!tile.isWalkable)
-                        tile.isWalkable = true;
+                    if (!tile.isWalkable)
+                        tile.Conditions("", "", "walkable");
                     else
-                        tile.isWalkable = false;
+                        tile.Conditions("", "", "");
+                }
+
+                if (mouseState.RightButton == ButtonState.Pressed)
+                {
+                    if(!tile.Start && !tile.End)
+                    {    
+                        if (Keyboard.GetState().IsKeyDown(Keys.S) && !_startSelected)
+                        {
+                            foreach (Tile t in _tileGrid.Tiles)
+                            {
+                                if (t.End || !t.isWalkable) continue;
+                                t.Conditions("", "", "walkable");
+                            }
+                            tile.Conditions("startpoint", "", "walkable");
+                            _startSelected = true;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.E) && !_endSelected)
+                        {
+                            foreach (Tile t in _tileGrid.Tiles)
+                            {
+                                if (t.Start || !t.isWalkable) continue;
+                                t.Conditions("", "", "walkable");
+                            }
+                            tile.Conditions("", "endpoint", "walkable");
+                            _endSelected = true;
+                        }
+                    }
                 }
             }
+            
         }
         
         base.Update(gameTime);
