@@ -19,11 +19,25 @@ public class tileGrid
         }
     }
 
+    public void Update(GameTime gameTime)
+    {
+        
+    }
+
     public void Draw(SpriteBatch spriteBatch, Texture2D texture, Texture2D pixel)
     {
         foreach (Tile tile in Tiles)
         {
-            tile.Draw(spriteBatch, texture, pixel);
+            Color tileColor = tile.Start ? Color.Green : Color.White;
+            if (tile.End)
+                tileColor = Color.Red;
+            if(!tile.isWalkable && !tile.End && !tile.Start)
+                tileColor = Color.Black;
+            spriteBatch.Draw(texture, tile._bounds, tileColor);
+            spriteBatch.Draw(pixel, new Rectangle(tile._bounds.X, tile._bounds.Y, tile._bounds.Width, 1), Color.Black); //Top
+            spriteBatch.Draw(pixel,  new Rectangle(tile._bounds.X, tile._bounds.Y + (tile._bounds.Height - 1), tile._bounds.Width, 1), Color.Black);//Bottom
+            spriteBatch.Draw(pixel,  new Rectangle(tile._bounds.X, tile._bounds.Y, 1, tile._bounds.Height), Color.Black);//Left
+            spriteBatch.Draw(pixel,  new Rectangle(tile._bounds.X + (tile._bounds.Width - 1), tile._bounds.Y, 1, tile._bounds.Height), Color.Black);//Right
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -21,6 +22,14 @@ public class Game1 : Game
     private Texture2D _pixelTex;
     
     public Tile[,] Tiles;
+    public Vector2 StartBoxPos = new Vector2(0, 0);
+    public Vector2 EndBoxPos = new Vector2(0,1);
+    
+    public static MouseState mouseState =  Mouse.GetState();
+    public int mouseX = mouseState.X;
+    public int mouseY = mouseState.Y;
+    
+    public static Point mousePoint;
 
     #region Game1
     public Game1()
@@ -46,17 +55,42 @@ public class Game1 : Game
         _screenResolution = new ScreenResolution(_graphics, _resolution, _isFullScreen);
         
         //PURPOSE: loads the texture for the node
-        _tileTex = Content.Load<Texture2D>("squareTex");
+        // _tileTex = Content.Load<Texture2D>("squareTex");
         
         //PURPOSE: creates a pixel of screen that can be used to be coloured
         _pixelTex = new Texture2D(GraphicsDevice, 1, 1);
         _pixelTex.SetData(new Color[] { Color.White });
+        
+        _tileGrid.Tiles[(int)StartBoxPos.X,(int)StartBoxPos.Y].Start = true;
+        if (_tileGrid.Tiles[(int)StartBoxPos.X, (int)StartBoxPos.Y].Start)
+            _tileGrid.Tiles[(int)StartBoxPos.X, (int)StartBoxPos.Y].isWalkable = false;
+        
+        _tileGrid.Tiles[(int)EndBoxPos.X,(int)EndBoxPos.Y].End = true;
+        if (_tileGrid.Tiles[(int)EndBoxPos.X, (int)EndBoxPos.Y].End)
+            _tileGrid.Tiles[(int)EndBoxPos.X, (int)EndBoxPos.Y].isWalkable = false;
     }
     #endregion
     #region Update
     protected override void Update(GameTime gameTime)
     {
         if(Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+        
+        mouseState = Mouse.GetState();
+        mousePoint = new Point(mouseState.X, mouseState.Y);
+        
+        foreach(Tile tile in _tileGrid.Tiles)
+        {
+            if (tile._bounds.Contains(mousePoint))
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    if(!tile.isWalkable)
+                        tile.isWalkable = true;
+                    else
+                        tile.isWalkable = false;
+                }
+            }
+        }
         
         base.Update(gameTime);
     }
