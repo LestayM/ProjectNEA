@@ -80,51 +80,103 @@ public class Game1 : Game
         
         bool _startSelected = false;
         bool _endSelected = false;
+        
         foreach(Tile tile in _tileGrid.Tiles)
         {
-            if (tile._bounds.Contains(mousePoint))
+            if (mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (mouseState.LeftButton == ButtonState.Pressed)
+                if (tile._bounds.Contains(mousePoint))
                 {
-                    if (!tile.isWalkable)
-                        tile.Conditions("", "", "walkable");
-                    else
-                        tile.Conditions("", "", "");
-                }
+                    if (!(Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.E)))
+                    {
+                        if (!tile.isWalkable)
+                            tile.isWalkable = true;
+                        else
+                            tile.isWalkable = false;
+                    }
 
-                if (mouseState.RightButton == ButtonState.Pressed)
-                {
-                    if(!tile.Start && !tile.End)
-                    {    
-                        if (Keyboard.GetState().IsKeyDown(Keys.S) && !_startSelected)
+                    if (Keyboard.GetState().IsKeyDown(Keys.S) && tile.isWalkable && !tile.End)
+                    {
+                        foreach(Tile t in _tileGrid.Tiles)
                         {
-                            foreach (Tile t in _tileGrid.Tiles)
+                            if (t.Start)
                             {
-                                if (t.End || !t.isWalkable) continue;
-                                t.Conditions("", "", "walkable");
+                                _startSelected = true;
+                                continue;
                             }
-                            tile.Conditions("startpoint", "", "walkable");
+                            t.Start = false;
+                        }
+                        if (!tile.Start && !_startSelected)
+                        {
+                            tile.Start = true;
                             _startSelected = true;
                         }
-
-                        if (Keyboard.GetState().IsKeyDown(Keys.E) && !_endSelected)
+                        else if (tile.Start)
                         {
-                            foreach (Tile t in _tileGrid.Tiles)
-                            {
-                                if (t.Start || !t.isWalkable) continue;
-                                t.Conditions("", "", "walkable");
-                            }
-                            tile.Conditions("", "endpoint", "walkable");
-                            _endSelected = true;
+                            tile.Start = false;
+                            _startSelected = false;
                         }
                     }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.E) && tile.isWalkable && !tile.Start)
+                    {
+                        foreach(Tile t in _tileGrid.Tiles)
+                        {
+                            if (t.End)
+                            {
+                                _endSelected = true;
+                                continue;
+                            }
+                            t.End = false;
+                        }
+                        if (!tile.End && !_endSelected)
+                        {
+                            tile.End = true;
+                            _endSelected = true;
+                        }
+                        else if (tile.End)
+                        {
+                            tile.End = false;
+                            _endSelected = false;
+                        }
+                    }
+                    // if ((Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.E)))
+                    //
+                    //     if (!tile.Start && !tile.End)
+                    //     {
+                    //         if (Keyboard.GetState().IsKeyDown(Keys.S) && !_startSelected)
+                    //         {
+                    //             foreach (Tile t in _tileGrid.Tiles)
+                    //             {
+                    //                 if (t.End || !t.isWalkable) continue;
+                    //                 t.isWalkable = true;
+                    //             }
+                    //
+                    //             tile.Start = true;
+                    //             tile.isWalkable = true;
+                    //             _startSelected = true;
+                    //         }
+                    //
+                    //         if (Keyboard.GetState().IsKeyDown(Keys.E) && !_endSelected)
+                    //         {
+                    //             foreach (Tile t in _tileGrid.Tiles)
+                    //             {
+                    //                 if (t.Start || !t.isWalkable) continue;
+                    //                 t.isWalkable = true;
+                    //                 t.Start = false;
+                    //                 t.End = false;
+                    //             }
+                    //
+                    //             tile.isWalkable = true;
+                    //             tile.Start = false;
+                    //             tile.End = true;
+                    //             _endSelected = true;
+                    //         }
+                    //     }
                 }
             }
-            
         }
-        
         base.Update(gameTime);
-    }
+        }
     #endregion 
     #region Draw
     protected override void Draw(GameTime gameTime)

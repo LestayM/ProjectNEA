@@ -14,12 +14,12 @@ public class Tile
 
 
 
-    public void Conditions(string start, string end, string walkable)
-    {
-        Start = start.ToLower() == "startpoint"  && !End && isWalkable ? true : false;
-        End = end.ToLower() == "endpoint" && !Start && isWalkable ? true : false;
-        isWalkable = walkable.ToLower() == "walkable" ? true : false;
-    }
+    // public void Conditions(string start, string end, string walkable)
+    // {
+    //     Start = start.ToLower() == "startpoint"  && !End && isWalkable ? true : false;
+    //     End = end.ToLower() == "endpoint" && !Start && isWalkable ? true : false;
+    //     isWalkable = walkable.ToLower() == "walkable" ? true : false;
+    // }
     public Tile(int x, int y, int size)
     {
         if (isWalkable && Start)

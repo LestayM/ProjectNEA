@@ -28,7 +28,9 @@ public class tileGrid
     {
         foreach (Tile tile in Tiles)
         {
-            Color tileColor = tile.Start ? Color.Green : Color.White;
+            Color tileColor = Color.White;
+            if(tile.Start)
+                tileColor = Color.Green;
             if (tile.End)
                 tileColor = Color.Red;
             if(!tile.isWalkable && !tile.End && !tile.Start)
