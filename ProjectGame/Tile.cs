@@ -12,6 +12,8 @@ public class Tile
     public bool isWalkable = true;
     public int pathCost = 1;
 
+    public bool visited = false;
+
 
 
     // public void Conditions(string start, string end, string walkable)

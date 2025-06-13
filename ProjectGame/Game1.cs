@@ -11,6 +11,8 @@ public class Game1 : Game
     private SpriteBatch _batch;
 
     private tileGrid _tileGrid;
+    public int tileNumX = 10;
+    public int tileNumY = 10;
 
     #region ScreenResolution
     private readonly Vector2 _resolution = new Vector2(500, 500);
@@ -42,7 +44,7 @@ public class Game1 : Game
     #region Initalize
     protected override void Initialize()
     {
-        _tileGrid = new tileGrid(50, new Vector2(0, 0), 10, 10);
+        _tileGrid = new tileGrid(50, new Vector2(0, 0), tileNumX, tileNumY);
         base.Initialize();
     }
     #endregion
@@ -110,6 +112,7 @@ public class Game1 : Game
                         {
                             tile.Start = true;
                             _startSelected = true;
+                            // Console.WriteLine("Start point was selected successfully, locations of the tiles around the start are: " + );
                         }
                         else if (tile.Start)
                         {

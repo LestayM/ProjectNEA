@@ -18,12 +18,7 @@ public class tileGrid
             }
         }
     }
-
-    public void Update(GameTime gameTime)
-    {
-        
-    }
-
+    
     public void Draw(SpriteBatch spriteBatch, Texture2D texture, Texture2D pixel)
     {
         foreach (Tile tile in Tiles)
